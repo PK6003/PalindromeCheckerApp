@@ -7,15 +7,25 @@ public class PalindromeCheckerApp {
     public static void main(String[] args) {
         String text = "madam";
 
-        // Use Stack-based strategy
+        // Stack-based strategy
         PalindromeStrategy stackStrategy = new StackStrategy();
         PalindromeService service1 = new PalindromeService(stackStrategy);
-        System.out.println("Stack Strategy: " + text + " → " + (service1.isPalindrome(text) ? "Palindrome" : "Not Palindrome"));
 
-        // Use Deque-based strategy
+        long startTime1 = System.nanoTime();
+        boolean result1 = service1.isPalindrome(text);
+        long endTime1 = System.nanoTime();
+        System.out.println("Stack Strategy: \"" + text + "\" → " + (result1 ? "Palindrome" : "Not Palindrome"));
+        System.out.println("Execution Time: " + (endTime1 - startTime1) + " ns");
+
+        // Deque-based strategy
         PalindromeStrategy dequeStrategy = new DequeStrategy();
         PalindromeService service2 = new PalindromeService(dequeStrategy);
-        System.out.println("Deque Strategy: " + text + " → " + (service2.isPalindrome(text) ? "Palindrome" : "Not Palindrome"));
+
+        long startTime2 = System.nanoTime();
+        boolean result2 = service2.isPalindrome(text);
+        long endTime2 = System.nanoTime();
+        System.out.println("Deque Strategy: \"" + text + "\" → " + (result2 ? "Palindrome" : "Not Palindrome"));
+        System.out.println("Execution Time: " + (endTime2 - startTime2) + " ns");
     }
 }
 
@@ -24,7 +34,7 @@ interface PalindromeStrategy {
     boolean check(String text);
 }
 
-// PalindromeService class uses a strategy
+// Service class uses a strategy
 class PalindromeService {
     private PalindromeStrategy strategy;
 
@@ -37,7 +47,7 @@ class PalindromeService {
     }
 }
 
-// Stack-based strategy
+// Stack-based implementation
 class StackStrategy implements PalindromeStrategy {
     @Override
     public boolean check(String text) {
@@ -52,7 +62,7 @@ class StackStrategy implements PalindromeStrategy {
     }
 }
 
-// Deque-based strategy
+// Deque-based implementation
 class DequeStrategy implements PalindromeStrategy {
     @Override
     public boolean check(String text) {
