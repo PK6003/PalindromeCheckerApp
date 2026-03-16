@@ -1,14 +1,19 @@
 public class PalindromeCheckerApp {
-    static void main(String[] args) {
-        String input = "radar";
-        char[] chars = input.toCharArray();
+
+    public static void main(String[] args) {
+
+        String text = "madam";
+
+        // Convert string to character array
+        char[] characters = text.toCharArray();
 
         int start = 0;
-        int end = chars.length - 1;
-
+        int end = characters.length - 1;
         boolean isPalindrome = true;
-        while(start<end){
-            if(chars[start]!=chars[end]) {
+
+        // Two-pointer comparison
+        while (start < end) {
+            if (characters[start] != characters[end]) {
                 isPalindrome = false;
                 break;
             }
@@ -16,8 +21,10 @@ public class PalindromeCheckerApp {
             end--;
         }
 
-        System.out.println("Input test :" + input);
-        System.out.println("Is it a Palindrome? :" + isPalindrome);
-
+        if (isPalindrome) {
+            System.out.println("THE STRING \"" + text + "\" IS A PALINDROME");
+        } else {
+            System.out.println("THE STRING \"" + text + "\" IS NOT A PALINDROME");
+        }
     }
 }
