@@ -1,28 +1,47 @@
+import java.util.Stack;
+
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
         String text = "madam";
 
-        if (isPalindromeRecursive(text, 0, text.length() - 1)) {
+        // Create PalindromeChecker object
+        PalindromeChecker checker = new PalindromeChecker(text);
+
+        // Check palindrome
+        if (checker.checkPalindrome()) {
             System.out.println("THE STRING \"" + text + "\" IS A PALINDROME");
         } else {
             System.out.println("THE STRING \"" + text + "\" IS NOT A PALINDROME");
         }
     }
+}
 
-    // Recursive function to check palindrome
-    static boolean isPalindromeRecursive(String str, int start, int end) {
-        // Base case: 0 or 1 character
-        if (start >= end) {
-            return true;
+// PalindromeChecker class encapsulates palindrome logic
+class PalindromeChecker {
+
+    private String text;
+
+    // Constructor
+    public PalindromeChecker(String text) {
+        this.text = text;
+    }
+
+    // Method to check palindrome using stack
+    public boolean checkPalindrome() {
+        Stack<Character> stack = new Stack<>();
+
+        // Push characters to stack
+        for (int i = 0; i < text.length(); i++) {
+            stack.push(text.charAt(i));
         }
 
-        // Compare first and last characters
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
+        // Compare popped characters with original
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) != stack.pop()) {
+                return false;
+            }
         }
-
-        // Recursive call for substring
-        return isPalindromeRecursive(str, start + 1, end - 1);
+        return true;
     }
 }
