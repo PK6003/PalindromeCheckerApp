@@ -1,3 +1,5 @@
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Stack;
 
 public class PalindromeCheckerApp {
@@ -5,40 +7,61 @@ public class PalindromeCheckerApp {
     public static void main(String[] args) {
         String text = "madam";
 
-        // Create PalindromeChecker object
-        PalindromeChecker checker = new PalindromeChecker(text);
+        // Use Stack-based strategy
+        PalindromeStrategy stackStrategy = new StackStrategy();
+        PalindromeService service1 = new PalindromeService(stackStrategy);
+        System.out.println("Stack Strategy: " + text + " → " + (service1.isPalindrome(text) ? "Palindrome" : "Not Palindrome"));
 
-        // Check palindrome
-        if (checker.checkPalindrome()) {
-            System.out.println("THE STRING \"" + text + "\" IS A PALINDROME");
-        } else {
-            System.out.println("THE STRING \"" + text + "\" IS NOT A PALINDROME");
-        }
+        // Use Deque-based strategy
+        PalindromeStrategy dequeStrategy = new DequeStrategy();
+        PalindromeService service2 = new PalindromeService(dequeStrategy);
+        System.out.println("Deque Strategy: " + text + " → " + (service2.isPalindrome(text) ? "Palindrome" : "Not Palindrome"));
     }
 }
 
-// PalindromeChecker class encapsulates palindrome logic
-class PalindromeChecker {
+// Strategy interface
+interface PalindromeStrategy {
+    boolean check(String text);
+}
 
-    private String text;
+// PalindromeService class uses a strategy
+class PalindromeService {
+    private PalindromeStrategy strategy;
 
-    // Constructor
-    public PalindromeChecker(String text) {
-        this.text = text;
+    public PalindromeService(PalindromeStrategy strategy) {
+        this.strategy = strategy;
     }
 
-    // Method to check palindrome using stack
-    public boolean checkPalindrome() {
+    public boolean isPalindrome(String text) {
+        return strategy.check(text);
+    }
+}
+
+// Stack-based strategy
+class StackStrategy implements PalindromeStrategy {
+    @Override
+    public boolean check(String text) {
         Stack<Character> stack = new Stack<>();
-
-        // Push characters to stack
-        for (int i = 0; i < text.length(); i++) {
-            stack.push(text.charAt(i));
+        for (char ch : text.toCharArray()) {
+            stack.push(ch);
         }
+        for (char ch : text.toCharArray()) {
+            if (ch != stack.pop()) return false;
+        }
+        return true;
+    }
+}
 
-        // Compare popped characters with original
-        for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) != stack.pop()) {
+// Deque-based strategy
+class DequeStrategy implements PalindromeStrategy {
+    @Override
+    public boolean check(String text) {
+        Deque<Character> deque = new LinkedList<>();
+        for (char ch : text.toCharArray()) {
+            deque.addLast(ch);
+        }
+        while (deque.size() > 1) {
+            if (!deque.removeFirst().equals(deque.removeLast())) {
                 return false;
             }
         }
